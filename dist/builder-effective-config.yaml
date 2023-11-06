@@ -1,0 +1,20 @@
+directories:
+  output: dist
+  buildResources: assets
+files:
+  - filter:
+      - build/**/*
+      - build/**/*
+      - node_modules/**/*
+      - main.js
+extraMetadata:
+  main: build/electron.js
+appId: com.example.my-electron-app
+mac:
+  category: your.app.category
+  icon: assets/icon.icns
+win:
+  target: nsis
+  icon: assets/icon.ico
+extends: react-cra
+electronVersion: 26.2.1

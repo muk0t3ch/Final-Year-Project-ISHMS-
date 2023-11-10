@@ -61,7 +61,7 @@ function EmailForm() {
                     <div class="container">
                         <h1 class="text-center text-primary">Student Hospital Alert Visit Notification !</h1>
                         <div class="jumbotron">
-                            <p><strong>Subject:</strong> Notification of Student Hospital Visit Kalewa Clinic.</p>
+                            <p><strong>Subject:</strong> Notification of Student Hospital Visit Clinic.</p>
                             <p class="mb-0"><strong>Student Name:</strong> `+ text +`</p>
                             <p class="mb-0"><strong>Visit Date:</strong> `+ Date() +`</p>
                             <p class="mb-0"><strong>Reason for Visit:</strong> The student's primary reason for visiting the medical facility is due to feeling unwell and being sick.</p>

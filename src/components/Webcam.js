@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 import Typography from '@mui/material/Typography';
@@ -38,6 +39,7 @@ const theme = createMuiTheme({
     }
 });
 
+// eslint-disable-next-line no-unused-vars
 function NumberLinearProgress(props) {
     return (
         <Box display="flex" alignItems="center">
@@ -174,7 +176,7 @@ export const Webcam = () => {
 
             <>
                 {scanResultText ?
-                    <div style={{ margin: '5%', border: '1px solid lightgray', width: '50%', padding: '5%' }}>
+                    <div style={{ margin: '5%', border: '1px solid lightgrey', width: '50%', padding: '5%' }}>
                         {isHospitalAvailable() ? (
 
                             <Alert severity="success">
@@ -201,9 +203,10 @@ export const Webcam = () => {
                             </Alert> 
                         ) : (
                             <Alert severity="error">This student is ineligible to attend for medical at this time.</Alert>
+                            
                         )}
                     </div>
-                    : <div style={{ margin: '5%', border: '1px solid lightgray', width: '50%', padding: '10%' }}>
+                    : <div style={{ margin: '5%', border: '1px solid lightgrey', width: '50%', padding: '10%' }}>
                         {isHospitalAvailable() ? (
                             <Typography variant="h6" gutterBottom> Set your Student ID Card <FeaturedVideoIcon color='success' /> <br /> Towards the WebCam <br /> <PhotoCameraFrontIcon color='error' fontSize='large' />
                             </Typography>

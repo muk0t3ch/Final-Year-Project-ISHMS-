@@ -7,12 +7,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import IconButton from '@mui/material/IconButton';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 const columns = [
   { id: 'info', label: 'Student Name & Hospital', minWidth: 170 },
+  { id: 'timeAndDate', label: 'Time & Date', minWidth: 100 },
   { id: 'prescriptionPath', label: 'Prescription', minWidth: 100 },
 ];
-// ... Your imports ...
 
 export default function ReportTable() {
   const [reports, setReports] = useState([]);
@@ -29,14 +33,8 @@ export default function ReportTable() {
   };
 
   function extractStudentName(info) {
-    // Regular expression to match the student name in the info field
     const regex = /<strong>Student Name:<\/strong>\s*([^<]+)/;
-
-    // Use the regex to find the match in the info string
     const match = info.match(regex);
-
-    // If there is a match, return the captured group (student name)
-    // Otherwise, return null
     return match ? match[1].trim() : null;
   }
 
@@ -45,14 +43,31 @@ export default function ReportTable() {
       try {
         const response = await fetch('http://localhost:2010/get-reports');
         const data = await response.json();
+        const sortedReports = data
+          .map((report) => {
+            const updateDate = report.updateDate || report.creationDate || new Date().toISOString();
+            const currentDate = new Date(updateDate);
 
-        // Extract student names and update reports
-        const updatedReports = data.map((report) => ({
-          ...report,
-          studentName: extractStudentName(report.info),
-        }));
+            const formattedDate = currentDate.toLocaleString('en-US', {
+              weekday: 'long',
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              second: 'numeric',
+              timeZoneName: 'short',
+            });
 
-        setReports(updatedReports);
+            return {
+              ...report,
+              studentName: extractStudentName(report.info),
+              timeAndDate: formattedDate,
+            };
+          })
+          .sort((a, b) => new Date(b.updateDate || b.creationDate || 0) - new Date(a.updateDate || a.creationDate || 0));
+
+        setReports(sortedReports);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -63,25 +78,65 @@ export default function ReportTable() {
 
   return (
     <Paper sx={{ width: '100%' }}>
-      {/* ... TableContainer, TableHead, and other table setup ... */}
-      <TableBody>
-        {reports
-          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((report) => (
-            <TableRow hover role="checkbox" tabIndex={-1} key={report._id}>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
               {columns.map((column) => (
                 <TableCell key={column.id} align="left">
-                  {column.id === 'prescriptionPath' ? (
-                    <a href={`http://localhost:2010/download-pdf?filePath=${report[column.id]}`} target="_blank">Download Prescription</a>
-                  ) : (
-                    column.id === 'info' ? report.studentName : report[column.id]
-                  )}
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                    {column.label}
+                  </Typography>
                 </TableCell>
               ))}
             </TableRow>
-          ))}
-      </TableBody>
-      {/* ... TablePagination and other pagination setup ... */}
+          </TableHead>
+          <TableBody>
+            {reports
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((report) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={report._id}>
+                  {columns.map((column) => (
+                    <TableCell key={column.id} align="left">
+                      {column.id === 'prescriptionPath' ? (
+                        <>
+                          <IconButton
+                            href={`http://localhost:2010/download-pdf?filePath=${report[column.id]}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <PictureAsPdfIcon style={{ color: 'red' }} />
+                            <Box ml={1}>
+                            <Typography variant="body2">
+                              Download Prescription
+                            </Typography>
+                          </Box>
+                          </IconButton>
+                          
+                        </>
+                      ) : (
+                        column.id === 'info'
+                          ? report.studentName
+                          : column.id === 'timeAndDate'
+                            ? report.timeAndDate
+                            : report[column.id]
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 50]}
+        component="div"
+        count={reports.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Paper>
   );
 }

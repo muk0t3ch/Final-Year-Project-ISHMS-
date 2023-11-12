@@ -23,6 +23,7 @@ import IconButton from '@mui/material/IconButton';
 import clickSound from './components/clickSound/data-reveal-sound-6460.mp3';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
 import logo from './components/icons/logo.png'; // Replace with the path to your logo image
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 const drawerWidth = 240;
 
@@ -129,36 +130,39 @@ export default function Sidenav({ page }) {
           </List>
         </Drawer>
         <AppBar
-            position="fixed"
-            sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-        >
-          <Toolbar>
-            <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                style={{
-                  flexGrow: 1,
-                  fontSize: '25px',
-                  fontWeight: 'bold',
-                  fontStyle: 'italic',
-                  textAlign: 'center',
-                }}
-            >
-               INTEGRATED STUDENT HEALTH MANAGEMENT SYSTEM (ISHMS)
-            </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Box sx={{ flexDirection: 'column', alignItems: 'center' }}>
-                <IconButton onClick={handleLogout} color="inherit">
-                  <LogoutIcon sx={{ marginRight: '5px' }} />
-                </IconButton>
-                <Typography variant="subtitle1" component="div">
-                  Logout
-                </Typography>
-              </Box>
-            </Box>
-          </Toolbar>
-        </AppBar>
+  position="fixed"
+  sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+>
+  <Toolbar>
+    <Typography
+      variant="h6"
+      noWrap
+      component="div"
+      style={{
+        flexGrow: 1,
+        fontSize: '25px',
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        textAlign: 'center',
+      }}
+    >
+      INTEGRATED STUDENT HEALTH MANAGEMENT SYSTEM (ISHMS) <QrCodeScannerIcon
+        style={{ fontSize: '40px', marginLeft: '10px', color: '#ffffff' }}
+      />
+     
+    </Typography>
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ flexDirection: 'column', alignItems: 'center' }}>
+        <IconButton onClick={handleLogout} color="inherit">
+          <LogoutIcon sx={{ marginRight: '5px' }} />
+        </IconButton>
+        <Typography variant="subtitle1" component="div">
+          Logout
+        </Typography>
+      </Box>
+    </Box>
+  </Toolbar>
+</AppBar>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <div>{page}</div>
